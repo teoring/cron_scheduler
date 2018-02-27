@@ -62,4 +62,4 @@ add_custom_command(TARGET run_tests
   POST_BUILD
   COMMAND ./run_tests
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/bin
-  )
+)

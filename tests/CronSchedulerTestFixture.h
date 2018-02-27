@@ -1,5 +1,5 @@
-#ifndef SECURITYMATTERS_CRONSCHEDULERTESTFIXTURE_H_
-#define SECURITYMATTERS_CRONSCHEDULERTESTFIXTURE_H_
+#ifndef CRONSCHEDULERTESTFIXTURE_H_
+#define CRONSCHEDULERTESTFIXTURE_H_
 
 #include <random>
 
@@ -14,7 +14,8 @@ public:
     CronSchedulerTestFixture() : CronSchedulerTestFixture(4) 
     {}
     
-    CronSchedulerTestFixture(unsigned threadsAmount) : schedulerPtr(new cron::CronScheduler(threadsAmount))
+    CronSchedulerTestFixture(unsigned threadsAmount) : 
+        schedulerPtr(new cron::CronScheduler(threadsAmount))
     {
         // initial tick
         struct timeval tval = getCurrentTimeval();
@@ -71,4 +72,4 @@ private:
 
 } // namespace tests
 
-#endif // SECURITYMATTERS_CRONSCHEDULERTESTFIXTURE_H_
+#endif // CRONSCHEDULERTESTFIXTURE_H_

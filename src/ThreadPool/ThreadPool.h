@@ -1,5 +1,5 @@
-#ifndef SECURITYMATTERS_THREADPOOL_THREAD_POOL_H
-#define SECURITYMATTERS_THREADPOOL_THREAD_POOL_H
+#ifndef THREADPOOL_THREADPOOL_H_
+#define THREADPOOL_THREADPOOL_H_
 
 #include <vector>
 #include <queue>
@@ -103,4 +103,4 @@ inline ThreadPool::~ThreadPool()
 } // namespace threadpool
 } // namespace cron
 
-#endif // SECURITYMATTERS_THREADPOOL_THREAD_POOL_H
+#endif // THREADPOOL_THREADPOOL_H_

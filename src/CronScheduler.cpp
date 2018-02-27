@@ -71,7 +71,7 @@ CronScheduler::CronScheduler(unsigned threadsAmount) :
                 std::unique_lock<std::mutex> locker(lock_);
                 updated_ = false;
                 
-                // to avoid race condition if task was removed in the meantime
+                // to avoid a race condition if  task was removed in the meantime
                 if (this->tasks_.empty())
                     continue;
                 

@@ -1,5 +1,5 @@
-#ifndef SECURITYMATTERS_CRONJOBSCHEDULER_H_
-#define SECURITYMATTERS_CRONJOBSCHEDULER_H_
+#ifndef CRONJOBSCHEDULER_H_
+#define CRONJOBSCHEDULER_H_
 
 #include <sys/time.h>
 
@@ -110,4 +110,4 @@ private:
 
 } // namespace cron
 
-#endif // SECURITYMATTERS_CRONJOBSCHEDULER_H_
+#endif // CRONJOBSCHEDULER_H_

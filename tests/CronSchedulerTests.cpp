@@ -8,6 +8,7 @@
 
 using namespace tests;
 
+// delay after the time update to let worker thread finish the task
 const unsigned kWaitForWorkerMs = 5;
 const unsigned loadTestDurationSec = 1;
 
@@ -22,7 +23,7 @@ void onTimeEventCaller(std::function<void(const struct timeval&)> onNewTime)
 
     while (std::time(0) < starterAt + loadTestDurationSec + 1)
     {
-        // update time evert 20 ms
+        // update time every 20 ms
         std::this_thread::sleep_for(std::chrono::milliseconds(20));
         onNewTime(CronSchedulerTestFixture::getCurrentTimeval());
     }
@@ -37,11 +38,8 @@ void taskCreator(std::shared_ptr<cron::CronScheduler> schedulerPtr)
         
         auto tval = CronSchedulerTestFixture::getCurrentTimeval();
         tval.tv_usec += CronSchedulerTestFixture::getRandNum(0, 50) * 1000;
-
-        // set a task up to 50 milliseconds in the future
         schedulerPtr->scheduleAt(tval, task);
         amountOfScheduledTasks++ ;
-        // sleep for up to 50 ms
         std::this_thread::sleep_for(std::chrono::milliseconds(CronSchedulerTestFixture::getRandNum(0, 50)));
     }    
 }
@@ -89,7 +87,6 @@ BOOST_AUTO_TEST_CASE( ShouldExecuteTaskAtPlannedTime )
 
     tval.tv_sec++;
     fixture.getScheduler()->onNewTime(tval);
-    // to ensure worker thread will finish the task
     std::this_thread::sleep_for(std::chrono::milliseconds(kWaitForWorkerMs));
     BOOST_CHECK(taskFinished);
  }
