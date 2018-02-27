@@ -62,7 +62,7 @@ CronScheduler doesn't provide synchronization for context access.
 
     -GNU 4.7 or 5.4 compiler
     -Boost unit test framework
-    -gcov and gcov for coverage
+    -gcov and lcov for coverage
     -CMake 2.8 or greater
 
 To generate test coverage run:
