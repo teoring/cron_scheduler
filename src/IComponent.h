@@ -1,5 +1,5 @@
-#ifndef SECURITYMATTERS_ICOMPONENT_H
-#define SECURITYMATTERS_ICOMPONENT_H
+#ifndef ICOMPONENT_H_
+#define ICOMPONENT_H_
 
 namespace cron
 {
@@ -16,4 +16,4 @@ public:
 
 } // namespace cron
 
-#endif // SECURITYMATTERS_ICOMPONENT_H
+#endif // ICOMPONENT_H_

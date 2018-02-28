@@ -51,7 +51,7 @@ struct taskComparator {
     }
 };
 
-class CronScheduler : public IScheduler
+class CronScheduler :  public std::enable_shared_from_this<CronScheduler>, public IScheduler
 {
 public:
     using TaskContainer = std::multiset<std::shared_ptr<CronTask>, taskComparator>;
@@ -68,6 +68,7 @@ public:
 public:
     void onNewTime(const struct  timeval& param) override;
     void cancelTask(CronIdentifier key) override;
+    void initialize();
 
     CronIdentifier scheduleAt(const struct timeval& tval , Callback&& callback) override;
     CronIdentifier scheduleAt(const struct timeval& tval, Callback&& callback,

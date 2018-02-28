@@ -58,8 +58,13 @@ CronScheduler::CronScheduler(unsigned threadsAmount) :
     updated_(false),
     lastTaskId_(0),
     pool_(threadsAmount)
+{ }
+
+void CronScheduler::initialize() 
 {
-    pool_.enqueue([this] {
+    // to avoid segfault when object destructed but worker thread access it
+    auto self(shared_from_this());
+    pool_.enqueue([self, this] {
         while(!finished_)
         {
             if (this->tasks_.empty())
@@ -136,7 +141,7 @@ void CronScheduler::addTask(std::shared_ptr<CronTask>&& task)
 void CronScheduler::cancelTask(CronTask::CronIdentifier key)
 {
     std::lock_guard<std::mutex> locker(lock_);
-    for (auto it = tasks_.begin(); it != tasks_.end();)
+    for (auto it = tasks_.begin(); it != tasks_.end(); it++)
     {
         if ((*it)->get_id() == key)
         {

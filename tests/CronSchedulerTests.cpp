@@ -9,7 +9,7 @@
 using namespace tests;
 
 // delay after the time update to let worker thread finish the task
-const unsigned kWaitForWorkerMs = 5;
+const unsigned kWaitForWorkerMs = 25;
 const unsigned loadTestDurationSec = 1;
 
 std::atomic<unsigned> amountOfExecutedTasks;
@@ -155,10 +155,10 @@ BOOST_AUTO_TEST_CASE( ShouldRepeatIntervalTask )
         
     struct timeval tval = fixture.getCurrentTimeval();
     fixture.getScheduler()->onNewTime(tval);
-
+ 
     tval.tv_sec += 2;
     fixture.getScheduler()->repeatEvery(std::chrono::seconds(2), task);
-    
+
     fixture.getScheduler()->onNewTime(tval);
     std::this_thread::sleep_for(std::chrono::milliseconds(kWaitForWorkerMs));
     BOOST_CHECK_EQUAL(executedTimes, 1);
@@ -213,20 +213,16 @@ BOOST_AUTO_TEST_CASE( ShouldDeleteIntervalTask )
     struct timeval tval;
     gettimeofday (&tval, NULL);
     fixture.getScheduler()->onNewTime(tval);
-
+  
+    fixture.getScheduler()->repeatEvery(std::chrono::seconds(2), task);
+    auto taskId2 = fixture.getScheduler()->repeatEvery(std::chrono::seconds(8), task);
+    
     tval.tv_sec += 2;
-    auto id = fixture.getScheduler()->repeatEvery(std::chrono::seconds(2), task);
-
     fixture.getScheduler()->onNewTime(tval);
     std::this_thread::sleep_for(std::chrono::milliseconds(kWaitForWorkerMs));
     BOOST_CHECK_EQUAL(executedTimes, 1);
 
-    tval.tv_sec += 2;
-    fixture.getScheduler()->onNewTime(tval);
-    std::this_thread::sleep_for(std::chrono::milliseconds(kWaitForWorkerMs));
-    BOOST_CHECK_EQUAL(executedTimes, 2);
-
-    fixture.getScheduler()->cancelTask(id);
+    fixture.getScheduler()->cancelTask(taskId2);
 
     tval.tv_sec += 10;
     fixture.getScheduler()->onNewTime(tval);

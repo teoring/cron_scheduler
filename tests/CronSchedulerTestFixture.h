@@ -11,15 +11,15 @@ namespace tests
 class CronSchedulerTestFixture
 {
 public:
-    CronSchedulerTestFixture() : CronSchedulerTestFixture(4) 
+    CronSchedulerTestFixture() : CronSchedulerTestFixture(4)
     {}
     
-    CronSchedulerTestFixture(unsigned threadsAmount) : 
+    CronSchedulerTestFixture(unsigned threadsAmount) :
         schedulerPtr(new cron::CronScheduler(threadsAmount))
     {
-        // initial tick
         struct timeval tval = getCurrentTimeval();
         gettimeofday (&tval, NULL);
+        schedulerPtr->initialize();
         schedulerPtr->onNewTime(tval);
     }
  
@@ -65,7 +65,7 @@ public:
     {
         return storage_[key]  = value;
     }
-    
+
 private:
     std::map<int, std::string> storage_;
 };

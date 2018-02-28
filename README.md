@@ -2,12 +2,11 @@
 
 CronScheduler is a thread-safe scheduler designed to set and execute delayed or repeatable tasks at the specified time point. It is based on progschj`s implementation of ThreadPool which can be found using the following link: https://github.com/progschj/ThreadPool
 
-CronScheduler is driven by the external clock which invokes onNewTime(const struct timeval&) function to notify scheduler about time shift which allows to use it in the nonreal-time environment like testing or imitation runs.
+CronScheduler is driven by the external clock which invokes onNewTime(const struct timeval&) function to notify scheduler about the time shift which makes it possible  to use it in the nonreal-time environment like testing or imitation runs.
 
-It supports task scheduling up to milliseconds (with reasonable threshold deviations due to clock accuracy and actual system load). Internal implementation works with Unix timestamps as it`s a simple, time-zone independent form of the time representation. Multithreading implemented using standard STL thread which makes it possible to compile the project on different platforms (may require minor modifications).
+It supports task scheduling up to milliseconds (with reasonable threshold deviations due to the clock accuracy and actual system load). Internal implementation works with the Unix timestamps as it`s a simple, time-zone independent form of the time representation. Multithreading implemented using standard STL thread which makes it possible to compile the project on different platforms (may require minor modifications).
 
-CronScheduler support task contexts. It gives flexibility in terms of the way how input data could be transferred to the task internal scope. Context pointer passed to the task on the task creation and should be valid during the period of the expected task execution. 
-CronScheduler doesn't provide synchronization for context access.
+CronScheduler supports task contexts. Conext is the generic storage for any component which implements IComponent interface and gives flexibility in terms of the way how data could be transferred to the task internal scope. Context pointer passed to the task on the task creation. CronScheduler doesn't provide synchronization for context access.
 
 ## Basic usage:
 
@@ -27,7 +26,7 @@ CronScheduler doesn't provide synchronization for context access.
 
     ....
     // during configuration
-    std::shared_ptr<cron::CronScheduler> scheduler (new cron::CronScheduler(WORKERS_AMOUNT));
+    std::shared_ptr<cron::CronScheduler> scheduler(new cron::CronScheduler(WORKERS_AMOUNT));
     auto clockUpdater = [scheduler] (const struct timeval& time) 
             { scheduler->onNewTime(time); };
    
@@ -39,7 +38,7 @@ CronScheduler doesn't provide synchronization for context access.
     std::shared_ptr<cron::CronScheduler> scheduler;
 
     // create a task to be executed
-    auto task = [] () {
+    auto task = [] (const ContextCPtr& ctx) {
         struct timeval tval;
         gettimeofday (&tval, NULL);
         std::cout << "Task executed at " << scheduler::getTimestamp(tval)

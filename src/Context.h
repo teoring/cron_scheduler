@@ -1,5 +1,5 @@
-#ifndef SECURITYMATTERS_CONTEXT_H_
-#define SECURITYMATTERS_CONTEXT_H_
+#ifndef CONTEXT_H_
+#define CONTEXT_H_
 
 #include <memory>
 #include <map>
@@ -9,8 +9,6 @@
 namespace cron
 {
 
-class IComponent;
-
 class Context
 {
 public:
@@ -19,16 +17,15 @@ public:
     using Container = std::map<Key, ComponentPtr>;
 
 public:
-    template <class CType> void set(const std::shared_ptr<CType>& object, const Key& name)
+    template <class CType> void set(const std::shared_ptr<CType>& component, const Key& key)
     {
-        container_.insert(std::make_pair(name, object));
+        container_.insert(std::make_pair(key, component));
     }
 
-    template <class CType> std::shared_ptr<CType> get(const Key& name) const
+    template <class CType> std::shared_ptr<CType> get(const Key& key) const
     {
-        auto pos = container_.find(name);
-        return pos == container_.end() ?
-            nullptr : std::static_pointer_cast<CType>(pos->second);
+        auto it = container_.find(key);
+        return it == container_.end() ? nullptr : std::static_pointer_cast<CType>(it->second);
     }
 
 private:
@@ -40,4 +37,4 @@ typedef std::shared_ptr<const Context> ContextCPtr;
 
 } // namespace cron
 
-#endif // SECURITYMATTERS_CONTEXT_H_
+#endif // CONTEXT_H_
